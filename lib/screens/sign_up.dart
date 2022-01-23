@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/resources.dart';
+import 'package:instagram_clone/responsive/responsive.dart';
 import 'package:instagram_clone/utilities/utilities.dart';
 import 'package:instagram_clone/widgets/widgets.dart';
 
@@ -54,8 +55,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _isLoading = false;
     });
-    if (res != 'success') {
+    if (res == 'success') {
       showSnackBar(context, res);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileCsreenLayout(),
+          ),
+        ),
+      );
     }
     //print(res);
   }
@@ -131,10 +141,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //forget Password Button
 
                 //Sign in Button
-                CustomButton(
-                  onTap: () => SignUpUser(),
-                  title: 'Sign up',
-                  color: blueColor,
+                GestureDetector(
+                  child: Container(
+                    child: !_isLoading
+                        ? const Text(
+                            'Sign up',
+                          )
+                        : const CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                      color: blueColor,
+                    ),
+                  ),
+                  onTap: SignUpUser,
                 ),
                 const SizedBox(height: 40),
                 //Navigate to Sign Up Button

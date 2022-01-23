@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/providers/providers.dart';
+import 'package:instagram_clone/responsive/responsive.dart';
 import 'package:instagram_clone/screens/screens.dart';
-//import 'responsive/responsive.dart';
+import 'package:provider/provider.dart';
 import 'utilities/utilities.dart';
 
 void main() async {
@@ -30,17 +33,49 @@ class InstagramClone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Instagram Clone',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: mobileBackgroundColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UsersProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Instagram Clone',
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: mobileBackgroundColor,
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (conntext, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return const ResponsiveLayout(
+                  webScreenLayout: WebScreenLayout(),
+                  mobileScreenLayout: MobileCsreenLayout(),
+                );
+              } else if (snapshot.hasError) {
+                return (showSnackBar(context, '${snapshot.error}'));
+              }
+              //snapshot has no data
+            }
+            //snapshot is not connected
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              const Center(
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
+              );
+            }
+            return LoginScreen();
+          },
+        ),
+        //LoginScreen(),
+        // home: const ResponsiveLayout(
+        //   webScreenLayout: WebScreenLayout(),
+        //   mobileScreenLayout: MobileCsreenLayout(),
+        // ),
       ),
-      home: LoginScreen(),
-      // home: const ResponsiveLayout(
-      //   webScreenLayout: WebScreenLayout(),
-      //   mobileScreenLayout: MobileCsreenLayout(),
-      // ),
     );
   }
 }
