@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/utilities/colors.dart';
 
 class MobileCsreenLayout extends StatefulWidget {
   const MobileCsreenLayout({Key? key}) : super(key: key);
@@ -12,30 +11,80 @@ class MobileCsreenLayout extends StatefulWidget {
 }
 
 class _MobileCsreenLayoutState extends State<MobileCsreenLayout> {
-  String userName = '';
+  int _page = 0;
+  late PageController pageController;
 
   @override
   void initState() {
     super.initState();
-    getUserName();
+    pageController = PageController();
   }
 
-  void getUserName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    //print(snap.data());
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
+
+  void NavTapped(int page) {
+    pageController.jumpToPage(page);
+  }
+
+  void onPageChanged(int page) {
     setState(() {
-      userName = (snap.data() as Map<String, dynamic>)['userName'];
+      _page = page;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    //model.Users users = Provider.of<UsersProvider>(context).getUsers;
     return Scaffold(
-      body: Center(
-        child: Text('Hey👋 $userName, Welcome to Mobile Home Screen Layout'),
+      body: PageView(
+        children: [
+          Text('Feed'),
+          Text('Search'),
+          Text('Add Post'),
+          Text('Fav'),
+          Text('Profile'),
+        ],
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+        // child: Text('Hey👋  Welcome to Mobile Home Screen Layout'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: mobileBackgroundColor,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: _page == 0 ? primaryColor : secondaryColor,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search,
+                color: _page == 1 ? primaryColor : secondaryColor),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt_outlined,
+                color: _page == 2 ? primaryColor : secondaryColor),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite,
+                color: _page == 3 ? primaryColor : secondaryColor),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person,
+                color: _page == 4 ? primaryColor : secondaryColor),
+            label: '',
+          ),
+        ],
+        onTap: NavTapped,
       ),
     );
   }
