@@ -2,8 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/models/users.dart';
+import 'package:instagram_clone/providers/providers.dart';
 import 'package:instagram_clone/utilities/colors.dart';
 import 'package:instagram_clone/utilities/utilities.dart';
+import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -15,7 +18,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
 
-  selectImage(BuildContext parentContext) async {
+  _selectImage(BuildContext parentContext) async {
     return showDialog(
       context: parentContext,
       builder: (BuildContext context) {
@@ -57,10 +60,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Users users = Provider.of<UsersProvider>(context).getUsers;
     return _file == null
         ? Center(
             child: IconButton(
-              onPressed: () => selectImage(context),
+              onPressed: () => _selectImage(context),
               icon: const Icon(Icons.upload),
             ),
           )
@@ -94,8 +98,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
+                      backgroundImage: NetworkImage(
+                        users.profilePicUrl,
+                      ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4,
@@ -114,10 +119,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       child: AspectRatio(
                         aspectRatio: 587 / 451,
                         child: Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://images.unsplash.com/photo-1643056205382-779bfbe21a8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
+                              image: MemoryImage(_file!),
                               fit: BoxFit.fill,
                               alignment: FractionalOffset.topCenter,
                             ),
