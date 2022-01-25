@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/dimensions.dart';
+import 'package:instagram_clone/globle_variables.dart';
 import 'package:instagram_clone/providers/providers.dart';
 import 'package:provider/provider.dart';
 

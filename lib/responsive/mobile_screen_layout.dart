@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/globle_variables.dart';
 import 'package:instagram_clone/utilities/colors.dart';
 
 class MobileCsreenLayout extends StatefulWidget {
@@ -41,13 +42,7 @@ class _MobileCsreenLayoutState extends State<MobileCsreenLayout> {
     //model.Users users = Provider.of<UsersProvider>(context).getUsers;
     return Scaffold(
       body: PageView(
-        children: [
-          Text('Feed'),
-          Text('Search'),
-          Text('Add Post'),
-          Text('Fav'),
-          Text('Profile'),
-        ],
+        children: HomeScreenNavBar,
         controller: pageController,
         onPageChanged: onPageChanged,
         physics: const NeverScrollableScrollPhysics(),
