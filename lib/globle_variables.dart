@@ -5,7 +5,7 @@ const webScreenSize = 600;
 
 // ignore: constant_identifier_names
 const HomeScreenNavBar = [
-  Text('Feed'),
+  FeedScreen(),
   Text('Search'),
   AddPostScreen(),
   Text('Fav'),
