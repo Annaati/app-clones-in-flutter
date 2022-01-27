@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/models/users.dart';
 import 'package:instagram_clone/providers/providers.dart';
-import 'package:instagram_clone/utilities/colors.dart';
+import 'package:instagram_clone/resources/fire_store_methods.dart';
 import 'package:instagram_clone/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +17,39 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
+  final TextEditingController _descriptionController = TextEditingController();
+  bool _isLoading = false;
+
+  // ignore: non_constant_identifier_names
+  Future<void> PostToFeed(
+    String uid,
+    String userName,
+    String profilePic,
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FireStoreMethods().UploadToFeed(
+        _descriptionController.text,
+        uid,
+        userName,
+        profilePic,
+        _file!,
+      );
+      if (res == 'success') {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(context, 'Posted');
+        ClrPostImage();
+      } else {
+        showSnackBar(context, res);
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 
   _selectImage(BuildContext parentContext) async {
     return showDialog(
@@ -58,6 +91,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
+  void ClrPostImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Users users = Provider.of<UsersProvider>(context).getUsers;
@@ -72,14 +118,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
-                onPressed: () {},
+                onPressed: ClrPostImage,
                 icon: const Icon(Icons.arrow_back),
               ),
               title: const Text('Post to'),
               centerTitle: false,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => PostToFeed(
+                      users.uid, users.userName, users.profilePicUrl),
                   child: const Text(
                     'Post',
                     style: TextStyle(
@@ -93,6 +140,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
+                _isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(
+                        padding: EdgeInsets.only(top: 0),
+                      ),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,6 +159,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       width: MediaQuery.of(context).size.width * 0.4,
                       // ignore: prefer_const_constructors
                       child: TextField(
+                        controller: _descriptionController,
                         decoration: const InputDecoration(
                           hintText: 'Write a caption...',
                           border: InputBorder.none,

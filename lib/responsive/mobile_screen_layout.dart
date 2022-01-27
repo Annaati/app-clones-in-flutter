@@ -27,7 +27,7 @@ class _MobileCsreenLayoutState extends State<MobileCsreenLayout> {
     pageController.dispose();
   }
 
-  void NavTapped(int page) {
+  void navTapped(int page) {
     pageController.jumpToPage(page);
   }
 
@@ -79,7 +79,7 @@ class _MobileCsreenLayoutState extends State<MobileCsreenLayout> {
             label: '',
           ),
         ],
-        onTap: NavTapped,
+        onTap: navTapped,
       ),
     );
   }
