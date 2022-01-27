@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/utilities/colors.dart';
+import 'package:instagram_clone/widgets/widgets.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class FeedScreen extends StatelessWidget {
         ],
         centerTitle: false,
       ),
-      body: Column(),
+      body: const PostCard(),
     );
   }
 }
