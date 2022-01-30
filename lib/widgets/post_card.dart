@@ -142,11 +142,16 @@ class _PostCardState extends State<PostCard> {
                           Icons.favorite,
                           color: Colors.red,
                         )
-                      : const Icon(Icons.favorite_border_outlined),
+                      : const Icon(Icons.favorite_border),
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CommentsScreen()));
+                },
                 icon: const Icon(
                   Icons.comment_outlined,
                 ),
