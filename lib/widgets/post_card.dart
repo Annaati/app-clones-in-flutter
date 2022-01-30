@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/models.dart';
 import 'package:instagram_clone/providers/providers.dart';
+import 'package:instagram_clone/resources/fire_store_methods.dart';
 import 'package:instagram_clone/utilities/colors.dart';
 import 'package:instagram_clone/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -83,7 +84,12 @@ class _PostCardState extends State<PostCard> {
           ),
           //Post Image
           GestureDetector(
-            onDoubleTap: () {
+            onDoubleTap: () async {
+              await FireStoreMethods().likePost(
+                widget.snap['postId'],
+                users.uid,
+                widget.snap['likes'],
+              );
               setState(() {
                 isLikeAnimating = true;
               });
@@ -124,11 +130,19 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(users.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
+                  onPressed: () async {
+                    await FireStoreMethods().likePost(
+                      widget.snap['postId'],
+                      users.uid,
+                      widget.snap['likes'],
+                    );
+                  },
+                  icon: widget.snap['likes'].contains(users.uid)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(Icons.favorite_border_outlined),
                 ),
               ),
               IconButton(
@@ -166,7 +180,7 @@ class _PostCardState extends State<PostCard> {
                       .subtitle2!
                       .copyWith(fontWeight: FontWeight.w800),
                   child: Text(
-                    '${widget.snap['likes'].length} Likes',
+                    ' ${widget.snap['likes'].length} Likes',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
