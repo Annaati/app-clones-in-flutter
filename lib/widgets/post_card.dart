@@ -16,9 +16,8 @@ class PostCard extends StatefulWidget {
   State<PostCard> createState() => _PostCardState();
 }
 
-bool isLikeAnimating = false;
-
 class _PostCardState extends State<PostCard> {
+  bool isLikeAnimating = false;
   @override
   Widget build(BuildContext context) {
     final Users users = Provider.of<UsersProvider>(context).getUsers;
@@ -123,7 +122,7 @@ class _PostCardState extends State<PostCard> {
             children: [
               LikeAnimation(
                 isAnimating: widget.snap['likes'].contains(users.uid),
-                smallLikes: true,
+                smallLike: true,
                 child: IconButton(
                   onPressed: () {},
                   icon: const Icon(
