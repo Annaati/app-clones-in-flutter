@@ -10,7 +10,6 @@ class CommentsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CircleAvatar(
             backgroundImage: NetworkImage(
@@ -18,44 +17,46 @@ class CommentsCard extends StatelessWidget {
             radius: 18,
           ),
           Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                    text: TextSpan(
+            child: Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'userName',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: '  Some Static comments soon to be replaced',
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
                       children: [
-                        TextSpan(
-                          text: 'userName',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            '31/01/2022',
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w400),
+                          ),
                         ),
-                        TextSpan(
-                          text: '  Some Static comments soon to be replaced',
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                              padding: const EdgeInsets.all(8),
+                              child: const Text('Reply')),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          '31/01/2022',
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                            padding: const EdgeInsets.all(8),
-                            child: const Text('Reply')),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

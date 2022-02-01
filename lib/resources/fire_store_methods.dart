@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_clone/models/models.dart';
 import 'package:instagram_clone/resources/resources.dart';
+import 'package:instagram_clone/utilities/utilities.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
@@ -44,6 +45,7 @@ class FireStoreMethods {
     return res;
   }
 
+  // Like Post
   Future<void> likePost(String postId, String uid, List likes) async {
     try {
       if (likes.contains(uid)) {
@@ -53,6 +55,32 @@ class FireStoreMethods {
       } else {
         await _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid]),
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  //Store Comment
+  Future<void> PostComment(String postId, String commentText, String uid,
+      String userName, String profilePic) async {
+    try {
+      if (commentText.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'profilePic': profilePic,
+          'uid': uid,
+          'userName': userName,
+          'commentId': commentId,
+          'commentText': commentText,
+          'postId': postId,
+          'datePublished': DateTime.now(),
         });
       }
     } catch (e) {
