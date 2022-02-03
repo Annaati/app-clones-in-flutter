@@ -1,17 +1,16 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: non_constant_identifier_names, avoid_print
 
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_clone/models/models.dart';
 import 'package:instagram_clone/resources/resources.dart';
-import 'package:instagram_clone/utilities/utilities.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // ignore: non_constant_identifier_names
+
   Future<String> UploadToFeed(
     String descr,
     String uid,
@@ -79,9 +78,10 @@ class FireStoreMethods {
           'userName': userName,
           'commentId': commentId,
           'commentText': commentText,
-          'postId': postId,
           'datePublished': DateTime.now(),
         });
+      } else {
+        print('No comment to post');
       }
     } catch (e) {
       print(e.toString());
