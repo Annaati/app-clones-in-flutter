@@ -49,7 +49,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 8.0),
                   child: TextField(
                     controller: _commentsController,
                     decoration: InputDecoration(
@@ -60,14 +60,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 ),
               ),
               InkWell(
-                onTap: () async {
-                  await FireStoreMethods().PostComment(
-                    widget.snap('postId'),
-                    _commentsController.text,
-                    users.uid,
-                    users.userName,
-                    users.profilePicUrl,
-                  );
+                onTap: ()  async{
+                  await FireStoreMethods().PostComment(widget.snap['postId'], _commentsController.text, users.uid, users.userName, users.profilePicUrl);
                 },
                 child: Container(
                   padding:
