@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/screens/screens.dart';
+import 'package:zoom_clone/utils/colors.dart';
 
 void main() => runApp(const ZoomClone()); 
 
@@ -10,30 +12,19 @@ class ZoomClone extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-
-      home: const HomeScreen(),
+      title: 'Zoom clone',
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: backgroundColor, 
+      ),
+      routes: {
+        '/login': (context) => const LoginScreen(),
+      },
+      home: const LoginScreen(),
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({ Key? key }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      //appBar: AppBar(),
-      body: Center(
-        child: Text('Flutter-Firebase Zoom Clone Comming Soon inshaAllah...', 
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 14),
-      ),
-      ),
-    );
-  }
-}
 
 
 //Text('Flutter-Firebase Zoom Clone Comming Soon inshaAllah...', style: TextStyle(color: Colors.white),),
