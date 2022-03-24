@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/screens/home.dart';
 import 'package:zoom_clone/screens/screens.dart';
 import 'package:zoom_clone/utils/colors.dart';
 
@@ -18,6 +19,7 @@ class ZoomClone extends StatelessWidget {
       ),
       routes: {
         '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
       },
       home: const LoginScreen(),
     );
